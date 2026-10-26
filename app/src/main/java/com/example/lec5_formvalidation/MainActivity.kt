@@ -1,5 +1,6 @@
 package com.example.lec5_formvalidation
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity() {
         val edtPhone = findViewById<EditText>(R.id.edtPhone)
         val edtPassword = findViewById<EditText>(R.id.edtPassword)
         val btnRegister = findViewById<Button>(R.id.btnRegister)
+        val btnCancel = findViewById<Button>(R.id.btnCancel)
 
         btnRegister.setOnClickListener { view ->
             val username = edtUsername.text.toString().trim()
@@ -38,9 +40,22 @@ class MainActivity : AppCompatActivity() {
                     Snackbar.make(view, "Mật khẩu phải có ít nhất 6 ký tự!", Snackbar.LENGTH_LONG).show()
                 }
                 else -> {
-                    Snackbar.make(view, "Validate thành công!", Snackbar.LENGTH_SHORT).show()
+                    val user = User(username, email, phone, password)
+                    val intent = Intent(this, HomeActivity::class.java).apply {
+                        putExtra("EXTRA_USER", user)
+                    }
+                    startActivity(intent)
                 }
             }
+        }
+
+        // Nút Hủy: Xoá trắng các trường
+        btnCancel.setOnClickListener {
+            edtUsername.text.clear()
+            edtEmail.text.clear()
+            edtPhone.text.clear()
+            edtPassword.text.clear()
+            edtUsername.requestFocus()
         }
     }
 }
